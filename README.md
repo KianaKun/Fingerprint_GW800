@@ -15,7 +15,7 @@ npm run build for build
 
 ZKLib How To Use
 -----
-const ZKLib = require('zklib-js');
+{const ZKLib = require('zklib-js');
 
 const test = async () => {
   let zkInstance = new ZKLib('192.168.1.201', 4370, 5200, 5000);
@@ -49,4 +49,4 @@ const test = async () => {
   }
 };
 
-test();
+test();}
