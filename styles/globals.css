@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .fade-in {
+      @apply opacity-0 transition-opacity duration-500 ease-in-out;
+    }
+  
+    .fade-in.visible {
+      @apply opacity-100;
+    }
+    .slide-up {
+        @apply translate-y-8 transition-transform duration-300 ease-in-out;
+      }
+    
+      .slide-up.visible {
+        @apply translate-y-0;
+      }
+  }

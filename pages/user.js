@@ -25,6 +25,8 @@ export default function User() {
         if (ip && port) {
           const response = await axios.post("/api/user", { ip, port });
           
+          console.log("API Response:", response.data);
+
           if (response.data && response.data.users && Array.isArray(response.data.users.data)) {
             setUsers(response.data.users.data);
             setTimeout(() => setIsVisible(true), 100);
@@ -53,24 +55,15 @@ export default function User() {
       <Head>
         <title>User Terdaftar</title>
         <meta name="description" content="Berisi User yang terdaftar di mesin fingerprint" />
-        <style>{`
-          .fade-in {
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-          }
-          .fade-in.visible {
-            opacity: 1;
-          }
-        `}</style>
       </Head>
       <Header />
-      <main className="flex flex-col items-center min-h-screen bg-gray-100 py-8">
+      <main className="flex flex-col items-center min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Daftar Pengguna</h1>
         {error ? (
           <p className="text-red-500 bg-red-100 p-4 rounded-md">{error}</p>
         ) : users ? (
-          <div className={`fade-in ${isVisible ? 'visible' : ''} bg-white shadow-md rounded-lg overflow-hidden`}>
-            <table className="min-w-full divide-y divide-gray-200">
+          <div className={`fade-in ${isVisible ? 'visible' : ''} bg-white shadow-md rounded-lg overflow-x-auto w-full max-w-4xl`}>
+            <table className="min-w-full divide-y divide-gray-200 table-auto">
               <thead className="bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UID</th>
@@ -80,8 +73,8 @@ export default function User() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {users.map((user) => (
-                  <tr key={user.uid} className={user.uid % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                {users.map((user, index) => (
+                  <tr key={user.uid} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.uid}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.userId}</td>

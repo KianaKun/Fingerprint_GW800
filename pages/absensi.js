@@ -3,6 +3,7 @@ import Header from "@/pages/component/Header";
 import axios from "axios";
 import Head from "next/head";
 import { useRouter } from 'next/navigation';
+import * as XLSX from 'xlsx';
 
 export default function Absensi() {
   const [logs, setLogs] = useState(null);
@@ -51,46 +52,53 @@ export default function Absensi() {
     fetchLogs(date);
   };
 
+  const exportToExcel = () => {
+    if (!logs || logs.length === 0) {
+      setError("No data available to export");
+      return;
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet(logs);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Absensi Logs");
+
+    XLSX.writeFile(workbook, `absensi_logs_${selectedDate || "all"}.xlsx`);
+  };
+
   return (
     <>
       <Head>
         <title>Absensi Logs</title>
         <meta name="description" content="Berisi log absensi yang sudah diisi" />
-        <style>{`
-          .fade-in {
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-          }
-          .fade-in.visible {
-            opacity: 1;
-          }
-        `}</style>
       </Head>
       <Header />
-      <main className="flex flex-col items-center min-h-screen bg-gray-100 py-8">
+      <main className="flex flex-col items-center min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Log Absensi</h1>
-        <div className="mb-6 flex items-center bg-white p-4 rounded-lg shadow-md">
-          <label htmlFor="date-filter" className="mr-3 text-gray-700 font-medium">Filter berdasarkan tanggal:</label>
-          <div className="relative">
-            <input
-              type="date"
-              id="date-filter"
-              value={selectedDate}
-              onChange={handleDateChange}
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-              </svg>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 mb-6 w-full">
+          <div className="bg-white p-4 rounded-lg shadow-md flex flex-1 sm:max-w-xs">
+            <div className="flex items-center space-x-3">
+              <label htmlFor="date-filter" className="text-gray-700 font-medium">Filter berdasarkan tanggal:</label>
+              <input
+                type="date"
+                id="date-filter"
+                value={selectedDate}
+                onChange={handleDateChange}
+                className="block w-full pl-2 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
             </div>
           </div>
+          <button
+            onClick={exportToExcel}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          >
+            Export to Excel
+          </button>
         </div>
         {error ? (
           <p className="text-red-500 bg-red-100 p-4 rounded-md">{error}</p>
         ) : logs ? (
-          <div className={`fade-in ${isVisible ? 'visible' : ''} bg-white shadow-md rounded-lg overflow-hidden`}>
-            <table className="min-w-full divide-y divide-gray-200">
+          <div className={`fade-in ${isVisible ? 'visible' : ''} bg-white shadow-md rounded-lg overflow-x-auto w-full`}>
+            <table className="min-w-full divide-y divide-gray-200 table-auto">
               <thead className="bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Log</th>
