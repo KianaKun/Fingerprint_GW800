@@ -15,13 +15,13 @@ npm run build for build
 
 ZKLib How To Use
 -----
-const ZKLib = require('zklib-js');
+    const ZKLib = require('zklib-js');
 
-const test = async () => {
+    const test = async () => {
   
-  let zkInstance = new ZKLib('192.168.1.201', 4370, 5200, 5000);
+    let zkInstance = new ZKLib('192.168.1.201', 4370, 5200, 5000);
 
-  try {
+    try {
     
     // Create socket to machine
     
