@@ -26,12 +26,13 @@ export default function Header() {
 
   const openLogoutModal = () => {
     setShowLogoutModal(true);
-    setTimeout(() => setModalVisible(true), 100);
+    setModalVisible(true);
+    closeMenu(); // Menutup menu burger
   };
 
   const closeLogoutModal = () => {
     setModalVisible(false);
-    setTimeout(() => setShowLogoutModal(false), 300); // Sync with animation duration
+    setTimeout(() => setShowLogoutModal(false), 300); // Sync dengan durasi animasi
   };
 
   const confirmLogout = () => {

@@ -58,10 +58,37 @@ export default function Absensi() {
       return;
     }
 
-    const worksheet = XLSX.utils.json_to_sheet(logs);
+    // Definisikan header kolom untuk file Excel
+    const headers = [
+      "ID Log",
+      "ID User",
+      "Nama User",
+      "Tanggal dan Jam",
+      "IP Mesin"
+    ];
+
+    // Persiapkan data untuk file Excel
+    const dataForExcel = logs.map(log => ({
+      "ID Log": log.userSn,
+      "ID User": log.deviceUserId,
+      "Nama User": log.userName,
+      "Tanggal dan Jam": new Date(log.recordTime).toLocaleString('id-ID', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      }),
+      "IP Mesin": log.ip
+    }));
+
+    // Buat worksheet dari data
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: headers });
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Absensi Logs");
 
+    // Simpan file Excel
     XLSX.writeFile(workbook, `absensi_logs_${selectedDate || "all"}.xlsx`);
   };
 
