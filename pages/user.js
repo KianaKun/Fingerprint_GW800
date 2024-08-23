@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 export default function User() {
   const [users, setUsers] = useState(null);
   const [error, setError] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,10 +25,9 @@ export default function User() {
         if (ip && port) {
           const response = await axios.post("/api/user", { ip, port });
           
-          console.log("API Response:", response.data);
-
           if (response.data && response.data.users && Array.isArray(response.data.users.data)) {
             setUsers(response.data.users.data);
+            setTimeout(() => setIsVisible(true), 100);
           } else {
             console.error("Unexpected data format:", response.data);
             setError("Unexpected data format received from server");
@@ -53,35 +53,46 @@ export default function User() {
       <Head>
         <title>User Terdaftar</title>
         <meta name="description" content="Berisi User yang terdaftar di mesin fingerprint" />
+        <style>{`
+          .fade-in {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+          }
+          .fade-in.visible {
+            opacity: 1;
+          }
+        `}</style>
       </Head>
       <Header />
-      <main className="flex flex-col items-center min-h-screen">
-        <h1 className="text-2xl font-semibold p-4">Daftar Pengguna</h1>
+      <main className="flex flex-col items-center min-h-screen bg-gray-100 py-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Daftar Pengguna</h1>
         {error ? (
-          <p className="text-red-500">Error: {error}</p>
+          <p className="text-red-500 bg-red-100 p-4 rounded-md">{error}</p>
         ) : users ? (
-          <table className="border-collapse border border-gray-400">
-            <thead>
-              <tr>
-                <th className="border border-gray-400 px-4 py-2">UID</th>
-                <th className="border border-gray-400 px-4 py-2">Nama</th>
-                <th className="border border-gray-400 px-4 py-2">User ID</th>
-                <th className="border border-gray-400 px-4 py-2">Role</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.uid}>
-                  <td className="border border-gray-400 px-4 py-2">{user.uid}</td>
-                  <td className="border border-gray-400 px-4 py-2">{user.name}</td>
-                  <td className="border border-gray-400 px-4 py-2">{user.userId}</td>
-                  <td className="border border-gray-400 px-4 py-2">{getRoleName(user.role)}</td>
+          <div className={`fade-in ${isVisible ? 'visible' : ''} bg-white shadow-md rounded-lg overflow-hidden`}>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UID</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {users.map((user) => (
+                  <tr key={user.uid} className={user.uid % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.uid}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.userId}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{getRoleName(user.role)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
-          <p>Loading...</p>
+          <p className="text-gray-600 bg-gray-100 p-4 rounded-md">Loading...</p>
         )}
       </main>
     </>
