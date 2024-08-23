@@ -48,13 +48,13 @@ const test = async () => {
     console.log(attendanceSize);
 
     // Clear Attendance Log
-   await zkInstance.clearAttendanceLog();
+    await zkInstance.clearAttendanceLog();
 
-  } catch (error) {
+    } catch (error) {
     
     console.error("Error:", error);
   
-  } finally {
+    } finally {
     
     // Disconnect the machine
     
