@@ -1,4 +1,4 @@
-This Website is created using NextJS, Axios, ZKLib, NodeJS, Tailwind
+This Website is created using NextJS, Axios, ZKLib, NodeJS, Tailwind.
 ====
 
 Init
