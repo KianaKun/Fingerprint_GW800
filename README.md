@@ -43,9 +43,9 @@ const test = async () => {
     
     console.log("Logs:", logs);
 
-   const attendanceSize = await zkInstance.getAttendanceSize();
+    const attendanceSize = await zkInstance.getAttendanceSize();
    
-   console.log(attendanceSize);
+    console.log(attendanceSize);
 
     // Clear Attendance Log
    await zkInstance.clearAttendanceLog();
