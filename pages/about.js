@@ -30,7 +30,7 @@ export default function About() {
         <meta name="description" content="Creator Website" />
       </Head>
       <Header />
-      <p>Ini About</p>
+      <p>Ini Bodyku</p>
     </>
   );
 }
