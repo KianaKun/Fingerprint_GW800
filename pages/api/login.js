@@ -4,7 +4,6 @@ import ZKLib from 'zklib-js';
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { ip, port } = req.body;
-
     const zkInstance = new ZKLib(ip, port, 5200, 5000); // Sesuaikan timeout jika diperlukan
 
     try {
