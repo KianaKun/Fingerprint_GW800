@@ -96,27 +96,27 @@ export default function Header() {
 
       {/* Logout Confirmation Modal */}
       {showLogoutModal && (
-        <div className={`fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-60 ${modalVisible ? 'fade-in visible' : 'fade-in'}`}>
-          <div className={`bg-white rounded-lg p-6 w-80 text-center shadow-lg ${modalVisible ? 'slide-up visible' : 'slide-up'}`}>
-            <h2 className="text-lg font-semibold mb-4">Konfirmasi Logout</h2>
-            <p className="mb-4">Apakah Anda yakin ingin logout?</p>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={confirmLogout}
-                className="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600"
-              >
-                Ya
-              </button>
-              <button
-                onClick={closeLogoutModal}
-                className="bg-red-500 text-white rounded px-4 py-2 hover:bg-red-600"
-              >
-                Tidak
-              </button>
-            </div>
+      <div className={`fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50 ${modalVisible ? 'fade-in visible' : 'fade-in'}`}>
+        <div className={`bg-white rounded-lg p-6 w-80 text-center shadow-lg ${modalVisible ? 'slide-up visible' : 'slide-up'} relative`}>
+          <h2 className="text-lg font-semibold mb-4">Konfirmasi Logout</h2>
+          <p className="mb-4">Apakah Anda yakin ingin logout?</p>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={confirmLogout}
+              className="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            >
+              Ya
+            </button>
+            <button
+              onClick={closeLogoutModal}
+              className="bg-red-500 text-white rounded px-4 py-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+            >
+              Tidak
+            </button>
           </div>
         </div>
-      )}
+      </div>
+    )}
     </nav>
   );
 }
