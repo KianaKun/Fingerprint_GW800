@@ -7,11 +7,13 @@ clone repository
 
 cd */Fingerprint_Projects
 
-npm install
+npm install (for installing dependency)
 
-npm run dev for development
+npm run dev for development 
 
 npm run build for build
+
+npm run start for starting website that already builded with npm run build
 
 ZKLib How To Use
 -----
