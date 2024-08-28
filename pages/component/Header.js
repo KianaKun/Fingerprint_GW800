@@ -72,11 +72,8 @@ export default function Header() {
           <p className={`rounded p-3 text-center transition ease-in delay-100 ${pathname === '/user' ? 'bg-slate-400 text-white' : 'hover:bg-slate-400 hover:text-white'}`}>
             <Link href="/user" onClick={closeMenu}>User</Link>
           </p>
-          <p className={`rounded p-3 text-center transition ease-in delay-100 ${pathname === '/about' ? 'bg-slate-400 text-white' : 'hover:bg-slate-400 hover:text-white'}`}>
-            <Link href="/about" onClick={closeMenu}>About</Link>
-          </p>
           <p className={`rounded p-3 text-center transition ease-in delay-100 ${pathname === '/' ? 'bg-slate-400 text-white' : 'hover:bg-slate-400 hover:text-white'}`}>
-            <a href="#" onClick={(e) => { e.preventDefault(); openLogoutModal(); }}>Logout</a>
+            <a href="/" onClick={(e) => { e.preventDefault(); openLogoutModal(); }}>Logout</a>
           </p>
         </div>
       </div>
@@ -92,11 +89,8 @@ export default function Header() {
         <p className={`rounded p-3 transition ease-in delay-100 ${pathname === '/user' ? 'bg-slate-400 text-white' : 'hover:bg-slate-400 hover:text-white'}`}>
           <Link href="/user">User</Link>
         </p>
-        <p className={`rounded p-3 transition ease-in delay-100 ${pathname === '/about' ? 'bg-slate-400 text-white' : 'hover:bg-slate-400 hover:text-white'}`}>
-          <Link href="/about">About</Link>
-        </p>
         <p className={`rounded p-3 transition ease-in delay-100 ${pathname === '/' ? 'bg-slate-400 text-white' : 'hover:bg-slate-400 hover:text-white'}`}>
-          <a href="#" onClick={(e) => { e.preventDefault(); openLogoutModal(); }}>Logout</a>
+          <a href="/" onClick={(e) => { e.preventDefault(); openLogoutModal(); }}>Logout</a>
         </p>
       </div>
 
