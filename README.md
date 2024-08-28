@@ -3,7 +3,7 @@ This Website is created using NextJS, Axios, ZKLib, NodeJS, Tailwind.
 
 Init
 -----
-clone repository
+git clone https://github.com/KianaKun/Fingerprint_GW800.git
 
 cd */Fingerprint_Projects
 
