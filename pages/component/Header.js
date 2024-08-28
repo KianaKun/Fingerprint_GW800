@@ -73,7 +73,7 @@ export default function Header() {
             <Link href="/user" onClick={closeMenu}>User</Link>
           </p>
           <p className={`rounded p-3 text-center transition ease-in delay-100 ${pathname === '/' ? 'bg-slate-400 text-white' : 'hover:bg-slate-400 hover:text-white'}`}>
-            <a href="/" onClick={(e) => { e.preventDefault(); openLogoutModal(); }}>Logout</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); openLogoutModal(); }}>Logout</a>
           </p>
         </div>
       </div>
@@ -90,7 +90,7 @@ export default function Header() {
           <Link href="/user">User</Link>
         </p>
         <p className={`rounded p-3 transition ease-in delay-100 ${pathname === '/' ? 'bg-slate-400 text-white' : 'hover:bg-slate-400 hover:text-white'}`}>
-          <a href="/" onClick={(e) => { e.preventDefault(); openLogoutModal(); }}>Logout</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); openLogoutModal(); }}>Logout</a>
         </p>
       </div>
 
