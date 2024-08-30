@@ -3,6 +3,9 @@ This Website is created using NextJS, Axios, ZKLib, NodeJS, Tailwind.
 
 Init
 -----
+Install NodeJS Version 20 LTS on here:
+https://nodejs.org/en
+
 git clone https://github.com/KianaKun/Fingerprint_GW800.git
 
 cd */Fingerprint_Projects
