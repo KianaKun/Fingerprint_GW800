@@ -19,22 +19,45 @@ export default async function handler(req, res) {
         userMap[user.userId] = user.name;
       });
 
-      // Menambahkan nama pengguna ke setiap log dan filter berdasarkan tanggal
-      const logsWithNames = logs.data
+      // Filter dan format logs dengan status Masuk dan Keluar
+      const filteredLogs = logs.data
         .map(log => ({
           ...log,
-          userName: userMap[log.deviceUserId] || 'Unknown'
+          userName: userMap[log.deviceUserId] || 'Unknown',
+          recordDate: new Date(log.recordTime).toDateString()
         }))
-        .filter(log => {
-          if (!date) return true; // Jika tidak ada filter tanggal, tampilkan semua
-          const logDate = new Date(log.recordTime);
-          const filterDate = new Date(date);
-          return logDate.toDateString() === filterDate.toDateString();
-        });
+        .filter(log => !date || new Date(log.recordTime).toDateString() === new Date(date).toDateString());
 
-      // Mengirimkan data yang diformat ke frontend
+      // Kelompokkan logs berdasarkan userId dan recordDate
+      const groupedLogs = filteredLogs.reduce((acc, log) => {
+        const key = `${log.deviceUserId}-${log.recordDate}`;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(log);
+        return acc;
+      }, {});
+
+      // Format data untuk ditampilkan dengan status Masuk dan Keluar
+      const formattedLogs = Object.values(groupedLogs).map(group => {
+        // Urutkan berdasarkan waktu
+        group.sort((a, b) => new Date(a.recordTime) - new Date(b.recordTime));
+        if (group.length === 0) return [];
+
+        const first = group[0];
+        const last = group[group.length - 1];
+        return [
+          {
+            ...first,
+            status: 'Masuk'
+          },
+          {
+            ...last,
+            status: 'Keluar'
+          }
+        ];
+      }).flat();
+
       return res.status(200).json({
-        logs: { data: logsWithNames }
+        logs: { data: formattedLogs }
       });
     } catch (error) {
       return res.status(500).json({ message: 'Error connecting to fingerprint machine', error: error.message });

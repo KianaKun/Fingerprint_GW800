@@ -30,6 +30,7 @@ export default function Body_user() {
                     if (response.data && response.data.users && Array.isArray(response.data.users.data)) {
                         setUsers(response.data.users.data);
                         setTimeout(() => setIsVisible(true), 100);
+                        
                     } else {
                         console.error("Unexpected data format:", response.data);
                         setError("Unexpected data format received from server");
@@ -47,7 +48,7 @@ export default function Body_user() {
     }, [router]);
 
     const getRoleName = (role) => {
-        return role === 0 ? "User Biasa" : role === 1 ? "Admin" : "Tidak Diketahui";
+        return role === 0 ? "User Biasa" : role === 14 ? "Admin" : "Tidak Diketahui";
     };
 
     // Pagination logic

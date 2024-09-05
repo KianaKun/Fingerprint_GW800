@@ -27,7 +27,9 @@ export default function Body_absensi() {
                 const response = await axios.post("/api/absensi", { ip, port, date });
 
                 if (response.data && response.data.logs && Array.isArray(response.data.logs.data)) {
-                    setLogs(response.data.logs.data);
+                    const logs = response.data.logs.data;
+                    const processedLogs = processLogs(logs);
+                    setLogs(processedLogs);
                     setTimeout(() => setIsVisible(true), 100);
                 } else {
                     console.error("Unexpected data format:", response.data);
@@ -40,6 +42,27 @@ export default function Body_absensi() {
             console.error("Error fetching data:", err);
             setError(err.message);
         }
+    };
+
+    const processLogs = (logs) => {
+        let statusLogs = [];
+        logs.forEach(log => {
+            const existingLog = statusLogs.find(l => l.deviceUserId === log.deviceUserId);
+            if (existingLog) {
+                if (!existingLog.checkIn) {
+                    existingLog.checkIn = log.recordTime;
+                } else {
+                    existingLog.checkOut = log.recordTime;
+                }
+            } else {
+                statusLogs.push({
+                    ...log,
+                    checkIn: log.recordTime,
+                    checkOut: null
+                });
+            }
+        });
+        return statusLogs;
     };
 
     useEffect(() => {
@@ -63,7 +86,8 @@ export default function Body_absensi() {
             "ID Log",
             "ID User",
             "Nama User",
-            "Tanggal dan Jam",
+            "Check-In",
+            "Check-Out",
             "IP Mesin"
         ];
 
@@ -72,14 +96,8 @@ export default function Body_absensi() {
             "ID Log": log.userSn,
             "ID User": log.deviceUserId,
             "Nama User": log.userName,
-            "Tanggal dan Jam": new Date(log.recordTime).toLocaleString('id-ID', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-            }),
+            "Check-In": log.checkIn ? new Date(log.checkIn).toLocaleString('id-ID') : "N/A",
+            "Check-Out": log.checkOut ? new Date(log.checkOut).toLocaleString('id-ID') : "N/A",
             "IP Mesin": log.ip
         }));
 
@@ -135,7 +153,8 @@ export default function Body_absensi() {
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Log</th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID User</th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama User</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal dan Jam</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check-In</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check-Out</th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP Mesin</th>
                             </tr>
                         </thead>
@@ -146,14 +165,10 @@ export default function Body_absensi() {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{log.deviceUserId}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{log.userName}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {new Date(log.recordTime).toLocaleString('id-ID', {
-                                            year: 'numeric',
-                                            month: '2-digit',
-                                            day: '2-digit',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                            second: '2-digit',
-                                        })}
+                                        {log.checkIn ? new Date(log.checkIn).toLocaleString('id-ID') : "N/A"}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {log.checkOut ? new Date(log.checkOut).toLocaleString('id-ID') : "N/A"}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{log.ip}</td>
                                 </tr>
