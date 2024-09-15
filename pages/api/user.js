@@ -1,4 +1,4 @@
-// pages/api/dashboard.js
+// pages/api/user.js
 
 import ZKLib from 'zklib-js';
 
